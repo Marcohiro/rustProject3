@@ -19,7 +19,9 @@ pub mod image{
  
         pub fn new_with_file(filename: &Path) -> Image{
             let file = File::open(filename).unwrap();
+            let file2 = File::open(filename).unwrap();
             let buf_reader = BufReader::new(file);
+            let buf_reader2 = BufReader::new(file2);
             let mut h = 0;
             let mut w = 0;
             let mut m = 0;
@@ -39,16 +41,16 @@ pub mod image{
                     //On recupere la valeur maximale de la valeur de couleur
                     m = line.parse().unwrap();
                 }
-                else {
+                else if index > 2{
                     //On recupere les pixels
-                    let list: Vec<&str> = line.split(' ').collect();
-                    let r = list[0].parse().unwrap();
-                    let g = list[1].parse().unwrap();
-                    let b = list[2].parse().unwrap();
+                    let list: Vec<&str> = line.split_whitespace().collect();
+                    let r:u8 = list[0].parse().unwrap();
+                    let g:u8 = list[1].parse().unwrap();
+                    let b:u8 = list[2].parse().unwrap();
                     let pixel = pixel::Pixel::new(r, g, b);
                     pixels.push(pixel);
                 }
-            }           
+            }     
 
             return Image{
                 height: h,
